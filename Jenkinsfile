@@ -11,14 +11,8 @@ pipeline {
 
         stage("Build Development Container") {
             steps {
-               
                 //Build container in development mode
-                echo "${BUILD_ID}"
-                echo "${WORKSPACE}"
-                echo "${JOB_NAME}"
-                echo "Image NAme: [${IMAGE_NAME}]"
-                sh("docker build --target development -t python-template:latest .")
-
+                sh("docker build --target development -t ${IMAGE_NAME}:{IMAGE_TAG} .")
             }
         }
 
