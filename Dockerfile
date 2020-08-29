@@ -34,14 +34,3 @@ RUN pip install -r requirements-dev.txt
 
 # Start the app
 CMD ["python", "./app.py"]
-
-##################################################################################################################
-# Unit tests stage
-##################################################################################################################
-FROM python:3.8 AS unit-tests
-
-#Copy the content of the relase image
-COPY --from=development / /
-
-# Start the app
-CMD ["python", "./app.py"]
