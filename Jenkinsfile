@@ -12,7 +12,7 @@ pipeline {
         stage("Build Development Container") {
             steps {
                 //Build container in development mode
-                sh("docker build --target development -t ${IMAGE_NAME}:{IMAGE_TAG} .")
+                sh("docker build --target development -t ${IMAGE_NAME}:${IMAGE_TAG} .")
             }
         }
 
