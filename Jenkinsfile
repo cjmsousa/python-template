@@ -4,33 +4,33 @@ pipeline {
    
     stages {
 
-        stage('Validate Code') {
+        stage("Validate Code") {
             steps {
-               echo '${STAGE_NAME}'
+               echo "${STAGE_NAME}"
             }
         }
 
-        stage('Run Unit Tests') {
+        stage("Run Unit Tests") {
             steps {
-               echo '${STAGE_NAME}'
+               echo "${STAGE_NAME}"
             }
         }
 
-        stage('Run Integrations Tests') {
+        stage("Run Integrations Tests") {
             steps {
-               echo '${STAGE_NAME}'
+               echo "${STAGE_NAME}"
             }
         }
 
-        stage('Run End-to-End Tests') {
+        stage("Run End-to-End Tests") {
             steps {
-               echo '${STAGE_NAME}'
+               echo "${STAGE_NAME}"
             }
         }
 
-        stage('Push to Docker Hub') {
+        stage("Push to Docker Hub") {
             steps {
-               echo '${STAGE_NAME}'
+               echo "${STAGE_NAME}"
             }
         }
     }
