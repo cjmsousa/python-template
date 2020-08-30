@@ -20,7 +20,7 @@ pipeline {
 
         stage("Validate Code") {
             steps {
-                echo ${DEVELOPMENT_CONTAINER_ID}
+                echo "${DEVELOPMENT_CONTAINER_ID}"
             }
         }
 
