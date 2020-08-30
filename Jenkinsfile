@@ -14,7 +14,7 @@ pipeline {
             steps {
                 //Build container in development mode
                 sh("docker build --target development -t ${IMAGE_NAME}:${IMAGE_TAG} .")
-                DEVELOPMENT_CONTAINER_ID = sh('docker run -d -p ${APP_PORT}:${APP_PORT} ${IMAGE_NAME}:${IMAGE_TAG}')
+                DEVELOPMENT_CONTAINER_ID = sh(script: 'docker run -d -p ${APP_PORT}:${APP_PORT} ${IMAGE_NAME}:${IMAGE_TAG}', returnStdout: true)
             }
         }
 
