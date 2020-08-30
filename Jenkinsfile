@@ -14,13 +14,13 @@ pipeline {
             steps {
                 //Build container in development mode
                 sh("docker build --target development -t ${IMAGE_NAME}:${IMAGE_TAG} .")
-                sh('docker run -d -p ${APP_PORT}:${APP_PORT} ${IMAGE_NAME}:${IMAGE_TAG}')
+                DEVELOPMENT_CONTAINER_ID = sh('docker run -d -p ${APP_PORT}:${APP_PORT} ${IMAGE_NAME}:${IMAGE_TAG}')
             }
         }
 
         stage("Validate Code") {
             steps {
-                sh('')
+                echo ${DEVELOPMENT_CONTAINER_ID}
             }
         }
 
