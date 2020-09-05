@@ -7,8 +7,8 @@ pipeline {
         IMAGE_TAG = "${BUILD_ID}"
         APP_PORT = 5000
         DEVELOPMENT_CONTAINER_ID = ""
-        UNIT_TESTS_FOLDER = "/tests/unit-tests"
-        INTEGRATION_TESTS_FOLDER = "/tests/integrations-tests"
+        UNIT_TESTS_FOLDER = "/tests/unit_tests"
+        INTEGRATION_TESTS_FOLDER = "/tests/integrations_tests"
         ENDTOEND_TESTS_FOLDER = "/tests/endtoend_tests"
     }
    
