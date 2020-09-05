@@ -41,21 +41,21 @@ pipeline {
         stage("Run Unit Tests") {
             steps {
                 //Run unit tests
-                sh("docker exec ${DEVELOPMENT_CONTAINER_ID} pytest -v ${UNIT_TESTS_FOLDER}/")
+                sh("docker container exec ${DEVELOPMENT_CONTAINER_ID} pytest -v ${UNIT_TESTS_FOLDER}/")
             }
         }
 
         stage("Run Integrations Tests") {
             steps {
                 //Run integration tests
-                sh("docker exec ${DEVELOPMENT_CONTAINER_ID} pytest -v ${INTEGRATION_TESTS_FOLDER}/")
+                sh("docker container exec ${DEVELOPMENT_CONTAINER_ID} pytest -v ${INTEGRATION_TESTS_FOLDER}/")
             }
         }
 
         stage("Run End-to-End Tests") {
             steps {
                 //Run end to end tests
-                sh("docker exec ${DEVELOPMENT_CONTAINER_ID} pytest -v ${ENDTOEND_TESTS_FOLDER}/")
+                sh("docker container exec ${DEVELOPMENT_CONTAINER_ID} pytest -v ${ENDTOEND_TESTS_FOLDER}/")
             }
         }
 
