@@ -13,8 +13,6 @@ pipeline {
 
         stage("Create Development Container") {
             steps {
-                echo "${STAGE_NAME}"
-
                 //Build container in development mode
                 sh("docker build --target development -t ${IMAGE_NAME}:${IMAGE_TAG} .")
 
@@ -27,37 +25,33 @@ pipeline {
 
         stage("Validate Code") {
             steps {
-                echo "${STAGE_NAME}"
                 echo "${DEVELOPMENT_CONTAINER_ID}"
             }
         }
 
         stage("Run Unit Tests") {
             steps {
-                echo "${STAGE_NAME}"
             }
         }
 
         stage("Run Integrations Tests") {
             steps {
-                echo "${STAGE_NAME}"
             }
         }
 
         stage("Run End-to-End Tests") {
             steps {
-                echo "${STAGE_NAME}"
             }
         }
 
         stage("Push to Docker Hub") {
             steps {
-                echo "${STAGE_NAME}"
             }
         }
     }
     post {
         always { 
+            echo "${DEVELOPMENT_CONTAINER_ID}"
             //Remove development container
             sh('docker container stop ${DEVELOPMENT_CONTAINER_ID}')
             sh('docker container rm ${DEVELOPMENT_CONTAINER_ID}')
