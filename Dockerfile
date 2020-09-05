@@ -24,6 +24,7 @@ COPY --from=release / /
 #Copy tests
 COPY tests/unit_tests/ /tests/unit_tests/
 COPY tests/integration_tests/ /tests/integration_tests/
+COPY tests/endtoend_tests/ /tests/endtoend_tests/
 
 #Install requirements
 COPY requirements-dev.txt .
