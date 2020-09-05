@@ -22,7 +22,7 @@ FROM python:3.8 AS development
 COPY --from=release / /
 
 #Copy tests
-COPY tests/ /tests/
+COPY unittests/ /unittests/
 
 #Install requirements
 COPY requirements-dev.txt .
