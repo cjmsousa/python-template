@@ -58,7 +58,9 @@ pipeline {
     }
     post {
         always { 
-            echo 'I will always say Hello again!'
+            //Remove development container
+            sh('docker container stop ${DEVELOPMENT_CONTAINER_ID}')
+            sh('docker container rm ${DEVELOPMENT_CONTAINER_ID}')
         }
     }
 }
