@@ -37,7 +37,8 @@ pipeline {
 
         stage("Run Unit Tests") {
             steps {
-                echo "${STAGE_NAME}"
+                //Run unit tests
+                sh("docker exec charming_kapitsa pytest -v /tests")
             }
         }
 
