@@ -7,6 +7,9 @@ pipeline {
         IMAGE_TAG = "${BUILD_ID}"
         APP_PORT = 5000
         DEVELOPMENT_CONTAINER_ID = ""
+        UNIT_TESTS_FOLDER = "/tests/unit-tests"
+        INTEGRATION_TESTS_FOLDER = "/tests/integrations-tests"
+        ENDTOEND_TESTS_FOLDER = "/tests/endtoend_tests"
     }
    
     stages {
@@ -38,19 +41,21 @@ pipeline {
         stage("Run Unit Tests") {
             steps {
                 //Run unit tests
-                sh("docker exec charming_kapitsa pytest -v /tests")
+                sh("docker exec charming_kapitsa pytest -v ${UNIT_TESTS_FOLDER}/")
             }
         }
 
         stage("Run Integrations Tests") {
             steps {
-                echo "${STAGE_NAME}"
+                //Run integration tests
+                sh("docker exec charming_kapitsa pytest -v ${INTEGRATION_TESTS_FOLDER}/")
             }
         }
 
         stage("Run End-to-End Tests") {
             steps {
-                echo "${STAGE_NAME}"
+                //Run end to end tests
+                sh("docker exec charming_kapitsa pytest -v ${ENDTOEND_TESTS_FOLDER}/")
             }
         }
 
