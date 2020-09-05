@@ -6,6 +6,7 @@ pipeline {
         IMAGE_NAME = "${JOB_NAME}"
         IMAGE_TAG = "${BUILD_ID}"
         APP_PORT = 5000
+        DEVELOPMENT_CONTAINER_ID = ""
     }
    
     stages {
@@ -13,16 +14,21 @@ pipeline {
         stage("Create Development Container") {
             steps {
                 echo "${STAGE_NAME}"
+
                 //Build container in development mode
-                //sh("docker build --target development -t ${IMAGE_NAME}:${IMAGE_TAG} .")
-                //def DEVELOPMENT_CONTAINER_ID = sh(script: 'docker run -d -p ${APP_PORT}:${APP_PORT} ${IMAGE_NAME}:${IMAGE_TAG}', returnStdout: true)
+                sh("docker build --target development -t ${IMAGE_NAME}:${IMAGE_TAG} .")
+
+                //Start development container
+                script {
+                    DEVELOPMENT_CONTAINER_ID = sh(script: 'docker run -d -p ${APP_PORT}:${APP_PORT} ${IMAGE_NAME}:${IMAGE_TAG}', returnStdout: true)
+                }
             }
         }
 
         stage("Validate Code") {
             steps {
                 echo "${STAGE_NAME}"
-                //echo "${DEVELOPMENT_CONTAINER_ID}"
+                echo "${DEVELOPMENT_CONTAINER_ID}"
             }
         }
 
