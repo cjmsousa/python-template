@@ -5,6 +5,7 @@ pipeline {
     environment {
         IMAGE_NAME = "${JOB_NAME}"
         IMAGE_TAG = "${BUILD_ID}"
+        IMAGE_ID = ""
         APP_PORT = 5000
         DEVELOPMENT_CONTAINER_ID = ""
         UNIT_TESTS_FOLDER = "/tests/unit_tests"
@@ -16,7 +17,9 @@ pipeline {
         stage("Clear Resources") {
             steps {
                 //Remove all old containers from this build
-                sh("docker ps -a | awk '/${IMAGE_NAME}/ { print \$1 }' | xargs -r docker stop | xargs -r docker rm")
+                script {
+                    IMAGE_ID = sh("docker ps -a | awk '/${IMAGE_NAME}/ { print \$1 }' | xargs -r docker stop | xargs -r docker rm")
+                }
             }
         }
 
@@ -61,13 +64,12 @@ pipeline {
 
         stage("Push to Docker Hub") {
             steps {
-                echo "${STAGE_NAME}"
+                echo "${IMAGE_ID}"
             }
         }
     }
     post {
         always { 
-            echo "${DEVELOPMENT_CONTAINER_ID}"
             //Remove development container
             sh("docker container stop ${DEVELOPMENT_CONTAINER_ID}")
             sh("docker container rm ${DEVELOPMENT_CONTAINER_ID}")
