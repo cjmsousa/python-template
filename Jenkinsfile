@@ -16,7 +16,7 @@ pipeline {
         stage("Clear Resources") {
             steps {
                 //Remove all old containers from this build
-                sh("docker container rm \$(docker container stop \$(docker ps -a | grep \"${IMAGE_NAME}\" | awk '{ print \$1 }') || true || true)")
+                sh("docker ps -a | awk '/${IMAGE_NAME}/ { print \$1 }' | xargs docker stop | xargs docker rm")
             }
         }
 
