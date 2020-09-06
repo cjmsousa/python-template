@@ -8,6 +8,7 @@ pipeline {
         IMAGE_ID = ""
         APP_PORT = 5000
         DEVELOPMENT_CONTAINER_ID = ""
+        SOURCE_CODE_FOLDER = "/app"
         UNIT_TESTS_FOLDER = "/tests/unit_tests"
         INTEGRATION_TESTS_FOLDER = "/tests/integration_tests"
         ENDTOEND_TESTS_FOLDER = "/tests/endtoend_tests"
@@ -18,8 +19,9 @@ pipeline {
             steps {
                 //Remove all old containers from this build
                 script {
-                    IMAGE_ID = sh("docker ps -a | awk '/${IMAGE_NAME}/ { print \$1 }' | xargs -r docker stop | xargs -r docker rm")
+                    IMAGE_ID = sh(script: "docker ps -a | awk '/${IMAGE_NAME}/ { print \$1 }' | xargs -r docker stop | xargs -r docker rm", returnStdout: true).trim()
                 }
+                echo "Image created with id [${IMAGE_ID}]"
             }
         }
 
@@ -32,12 +34,14 @@ pipeline {
                 script {
                     DEVELOPMENT_CONTAINER_ID = sh(script: 'docker run -d -p ${APP_PORT}:${APP_PORT} ${IMAGE_NAME}:${IMAGE_TAG}', returnStdout: true).trim()
                 }
+                echo "Development container created with id [${DEVELOPMENT_CONTAINER_ID}]"
             }
         }
 
         stage("Validate Code") {
             steps {
-                echo "${DEVELOPMENT_CONTAINER_ID}"
+                //Run code validations
+                sh("docker container exec ${DEVELOPMENT_CONTAINER_ID} pylint ${SOURCE_CODE_FOLDER}/")
             }
         }
 
