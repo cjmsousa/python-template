@@ -75,10 +75,12 @@ pipeline {
         stage("Push to Docker Hub") {
             steps {
 
-                //Create release image
-                sh("docker build --target release -t ${IMAGE_NAME}:${IMAGE_TAG} .")
-                RELEASE_IMAGE_ID = sh(script: "docker images ls -q --filter reference=${IMAGE_NAME}:${IMAGE_TAG}", returnStdout: true).trim()
-                    
+                script {
+                    //Create release image
+                    sh("docker build --target release -t ${IMAGE_NAME}:${IMAGE_TAG} .")
+                    RELEASE_IMAGE_ID = sh(script: "docker images ls -q --filter reference=${IMAGE_NAME}:${IMAGE_TAG}", returnStdout: true).trim()
+                }
+                
                 //Tag release image
                 sh("docker tag ${RELEASE_IMAGE_ID} ${DOCKER_HUB_TAG}")
 
