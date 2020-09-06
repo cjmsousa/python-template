@@ -29,8 +29,12 @@ pipeline {
 
                 //Start development container
                 script {
-
-                    DEVELOPMENT_IMAGE_ID = sh(script: "docker build --target development -t ${IMAGE_NAME}:${IMAGE_TAG} .", returnStdout: true).trim()
+                    
+                    //Create development image
+                    sh("docker build --target development -t ${IMAGE_NAME}:${IMAGE_TAG} .")
+                    DEVELOPMENT_IMAGE_ID = sh(script: "docker images -q --filter reference=${IMAGE_NAME}:${IMAGE_TAG}", returnStdout: true).trim()
+                    
+                    //Start development container
                     DEVELOPMENT_CONTAINER_ID = sh(script: 'docker run -d -p ${APP_PORT}:${APP_PORT} ${IMAGE_NAME}:${IMAGE_TAG}', returnStdout: true).trim()
                 }
                 echo "Image created with id [${DEVELOPMENT_IMAGE_ID}]"
