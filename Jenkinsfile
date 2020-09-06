@@ -8,10 +8,12 @@ pipeline {
         APP_PORT = 5000
         DEVELOPMENT_CONTAINER_ID = ""
         DEVELOPMENT_IMAGE_ID = ""
+        RELEASE_IMAGE_ID = ""
         SOURCE_CODE_FOLDER = "/app"
         UNIT_TESTS_FOLDER = "/tests/unit_tests"
         INTEGRATION_TESTS_FOLDER = "/tests/integration_tests"
         ENDTOEND_TESTS_FOLDER = "/tests/endtoend_tests"
+        DOCKER_HUB_TAG = "cjmsousa/${JOB_NAME}:latest"
     }
    
     stages {
@@ -32,12 +34,12 @@ pipeline {
                     
                     //Create development image
                     sh("docker build --target development -t ${IMAGE_NAME}:${IMAGE_TAG} .")
-                    DEVELOPMENT_IMAGE_ID = sh(script: "docker images -q --filter reference=${IMAGE_NAME}:${IMAGE_TAG}", returnStdout: true).trim()
+                    DEVELOPMENT_IMAGE_ID = sh(script: "docker images ls -q --filter reference=${IMAGE_NAME}:${IMAGE_TAG}", returnStdout: true).trim()
                     
                     //Start development container
                     DEVELOPMENT_CONTAINER_ID = sh(script: 'docker run -d -p ${APP_PORT}:${APP_PORT} ${IMAGE_NAME}:${IMAGE_TAG}', returnStdout: true).trim()
                 }
-                echo "Image created with id [${DEVELOPMENT_IMAGE_ID}]"
+                echo "Development image created with id [${DEVELOPMENT_IMAGE_ID}]"
                 echo "Development container created with id [${DEVELOPMENT_CONTAINER_ID}]"
             }
         }
@@ -72,7 +74,16 @@ pipeline {
 
         stage("Push to Docker Hub") {
             steps {
-                echo "${IMAGE_ID}"
+
+                //Create release image
+                sh("docker build --target release -t ${IMAGE_NAME}:${IMAGE_TAG} .")
+                RELEASE_IMAGE_ID = sh(script: "docker images ls -q --filter reference=${IMAGE_NAME}:${IMAGE_TAG}", returnStdout: true).trim()
+                    
+                //Tag release image
+                sh("docker tag ${RELEASE_IMAGE_ID} ${DOCKER_HUB_TAG}")
+
+                //Push to Docker Hub
+                sh("docker push ${DOCKER_HUB_TAG}")
             }
         }
     }
