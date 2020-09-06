@@ -5,9 +5,9 @@ pipeline {
     environment {
         IMAGE_NAME = "${JOB_NAME}"
         IMAGE_TAG = "${BUILD_ID}"
-        IMAGE_ID = ""
         APP_PORT = 5000
         DEVELOPMENT_CONTAINER_ID = ""
+        DEVELOPMENT_IMAGE_ID = ""
         SOURCE_CODE_FOLDER = "/app"
         UNIT_TESTS_FOLDER = "/tests/unit_tests"
         INTEGRATION_TESTS_FOLDER = "/tests/integration_tests"
@@ -29,10 +29,11 @@ pipeline {
 
                 //Start development container
                 script {
-                    IMAGE_ID = sh(script: "docker build --target development -t ${IMAGE_NAME}:${IMAGE_TAG} .", returnStdout: true).trim()
+
+                    DEVELOPMENT_IMAGE_ID = sh(script: "docker build --target development -t ${IMAGE_NAME}:${IMAGE_TAG} .", returnStdout: true).trim()
                     DEVELOPMENT_CONTAINER_ID = sh(script: 'docker run -d -p ${APP_PORT}:${APP_PORT} ${IMAGE_NAME}:${IMAGE_TAG}', returnStdout: true).trim()
                 }
-                echo "Image created with id [${IMAGE_ID}]"
+                echo "Image created with id [${DEVELOPMENT_IMAGE_ID}]"
                 echo "Development container created with id [${DEVELOPMENT_CONTAINER_ID}]"
             }
         }
