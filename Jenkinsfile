@@ -41,7 +41,7 @@ pipeline {
         stage("Validate Code") {
             steps {
                 //Run code validations
-                sh("docker container exec ${DEVELOPMENT_CONTAINER_ID} pylint ${SOURCE_CODE_FOLDER}/")
+                sh("docker container exec ${DEVELOPMENT_CONTAINER_ID} pylint --exit-zero ${SOURCE_CODE_FOLDER}/")
             }
         }
 
