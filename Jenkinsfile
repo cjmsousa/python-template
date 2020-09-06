@@ -18,10 +18,7 @@ pipeline {
         stage("Clear Resources") {
             steps {
                 //Remove all old containers from this build
-                script {
-                    IMAGE_ID = sh(script: "docker ps -a | awk '/${IMAGE_NAME}/ { print \$1 }' | xargs -r docker stop | xargs -r docker rm", returnStdout: true).trim()
-                }
-                echo "Image created with id [${IMAGE_ID}]"
+                sh(script: "docker ps -a | awk '/${IMAGE_NAME}/ { print \$1 }' | xargs -r docker stop | xargs -r docker rm")
             }
         }
 
@@ -32,8 +29,10 @@ pipeline {
 
                 //Start development container
                 script {
+                    IMAGE_ID = sh(script: "docker build --target development -t ${IMAGE_NAME}:${IMAGE_TAG} .", returnStdout: true).trim()
                     DEVELOPMENT_CONTAINER_ID = sh(script: 'docker run -d -p ${APP_PORT}:${APP_PORT} ${IMAGE_NAME}:${IMAGE_TAG}', returnStdout: true).trim()
                 }
+                echo "Image created with id [${IMAGE_ID}]"
                 echo "Development container created with id [${DEVELOPMENT_CONTAINER_ID}]"
             }
         }
