@@ -88,7 +88,7 @@ pipeline {
                 //Push to Docker Hub
                 //withDockerRegistry([ credentialsId: "docker-hub-credentials", url: "" ]) {
                 script {
-                    docker.withDockerRegistry([credentialsId: "${DOCKER_HUB_CREDENTIALS_ID}"]) {
+                    withCredentials([credentialsId: "${DOCKER_HUB_CREDENTIALS_ID}"]) {
                         sh("docker push ${DOCKER_HUB_TAG}")
                     }
                 }
