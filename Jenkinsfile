@@ -14,6 +14,7 @@ pipeline {
         INTEGRATION_TESTS_FOLDER = "/tests/integration_tests"
         ENDTOEND_TESTS_FOLDER = "/tests/endtoend_tests"
         DOCKER_HUB_TAG = "cjmsousa/${JOB_NAME}:latest"
+        DOCKER_HUB_CREDENTIALS_ID = "docker-hub"
     }
    
     stages {
@@ -80,12 +81,15 @@ pipeline {
                     sh("docker build --target release -t ${IMAGE_NAME}:${IMAGE_TAG} .")
                     RELEASE_IMAGE_ID = sh(script: "docker images ls -q --filter reference=${IMAGE_NAME}:${IMAGE_TAG}", returnStdout: true).trim()
                 }
-                
+
                 //Tag release image
                 sh("docker tag ${RELEASE_IMAGE_ID} ${DOCKER_HUB_TAG}")
 
                 //Push to Docker Hub
-                sh("docker push ${DOCKER_HUB_TAG}")
+                //withDockerRegistry([ credentialsId: "docker-hub-credentials", url: "" ]) {
+                withDockerRegistry([credentialsId: "${DOCKER_HUB_CREDENTIALS_ID}"]) {
+                    sh("docker push ${DOCKER_HUB_TAG}")
+                }
             }
         }
     }
