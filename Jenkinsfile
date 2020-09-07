@@ -15,7 +15,7 @@ pipeline {
         ENDTOEND_TESTS_FOLDER = "/tests/endtoend_tests"
         DOCKER_HUB_TAG = "cjmsousa/${JOB_NAME}:latest"
         DOCKER_HUB_CREDENTIALS_ID = "docker-hub"
-        XYZ-CERTIFICATE-PASSWORD = ""
+        XYZ_CERTIFICATE_PASSWORD = ""
     }
    
     stages {
@@ -88,8 +88,8 @@ pipeline {
 
                 script {
 
-                    withCredentials(bindings: [certificate(credentialsId: DOCKER_HUB_CREDENTIALS_ID, passwordVariable: 'XYZ-CERTIFICATE-PASSWORD')]) {
-                        sh("echo ${XYZ-CERTIFICATE-PASSWORD}")
+                    withCredentials(bindings: [certificate(credentialsId: DOCKER_HUB_CREDENTIALS_ID, passwordVariable: 'XYZ_CERTIFICATE_PASSWORD')]) {
+                        sh("echo ${XYZ_CERTIFICATE_PASSWORD}")
                     }
                   // 
                 }
