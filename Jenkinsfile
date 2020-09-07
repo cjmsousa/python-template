@@ -86,7 +86,7 @@ pipeline {
                 sh("docker tag ${RELEASE_IMAGE_ID} ${DOCKER_HUB_TAG}")
 
                 script {
-                    withCredentials(credentialsId: DOCKER_HUB_CREDENTIALS_ID, usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD') {
+                    withCredentials($class: 'UsernamePasswordMultiBinding', credentialsId: DOCKER_HUB_CREDENTIALS_ID, usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD') {
                 
                         //Push to Docker Hub
                         sh("docker push ${DOCKER_HUB_TAG}") 
