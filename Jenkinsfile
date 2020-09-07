@@ -15,7 +15,6 @@ pipeline {
         ENDTOEND_TESTS_FOLDER = "/tests/endtoend_tests"
         DOCKER_HUB_TAG = "cjmsousa/${JOB_NAME}:latest"
         DOCKER_HUB_CREDENTIALS_ID = "docker-hub"
-        XYZ_CERTIFICATE_PASSWORD = ""
         USERNAME = ""
         PASSWORD = ""
     }
@@ -90,12 +89,10 @@ pipeline {
 
                 script {
 
-                    withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: DOCKER_HUB_CREDENTIALS_ID, usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
+                    withCredentials([[$class: "UsernamePasswordMultiBinding", credentialsId: DOCKER_HUB_CREDENTIALS_ID, usernameVariable: "USERNAME", passwordVariable: "PASSWORD"]]) {
 
-                        sh 'echo uname=$USERNAME pwd=$PASSWORD'
+                        sh "echo uname=$USERNAME pwd=$PASSWORD"
                         //docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-
-                        sh("echo ${XYZ_CERTIFICATE_PASSWORD}")
                     }
                   // 
                 }
