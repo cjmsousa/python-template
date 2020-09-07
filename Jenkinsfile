@@ -15,6 +15,7 @@ pipeline {
         ENDTOEND_TESTS_FOLDER = "/tests/endtoend_tests"
         DOCKER_HUB_TAG = "cjmsousa/${JOB_NAME}:latest"
         DOCKER_HUB_CREDENTIALS_ID = "docker-hub"
+        XYZ-CERTIFICATE-PASSWORD = ""
     }
    
     stages {
@@ -86,11 +87,10 @@ pipeline {
                 sh("docker tag ${RELEASE_IMAGE_ID} ${DOCKER_HUB_TAG}")
 
                 script {
-                    withCredentials("https://registry-1.docker.io/v2/", DOCKER_HUB_CREDENTIALS_ID) {
-                
-                        //Push to Docker Hub
-                        sh("docker push ${DOCKER_HUB_TAG}") 
-                    }
+
+                    withCredentials(bindings: [certificate(credentialsId: DOCKER_HUB_CREDENTIALS_ID, passwordVariable: 'XYZ-CERTIFICATE-PASSWORD')]) {
+                        sh("echo ${XYZ-CERTIFICATE-PASSWORD}")
+                  // 
                 }
             }
         }
