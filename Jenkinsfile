@@ -86,12 +86,7 @@ pipeline {
                 sh("docker tag ${RELEASE_IMAGE_ID} ${DOCKER_HUB_TAG}")
             
                 //Push to Docker Hub
-                //withDockerRegistry([ credentialsId: "docker-hub-credentials", url: "" ]) {
-                script {
-                    withCredentials([credentialsId: "docker-hub", url: ""]) {
-                        sh("docker push ${DOCKER_HUB_TAG}")
-                    }
-                }
+                sh("docker push ${DOCKER_HUB_TAG}")
             }
         }
     }
