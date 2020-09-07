@@ -74,9 +74,6 @@ pipeline {
         }
 
         stage("Push to Docker Hub") {
-            when {
-                branch 'master'
-            }
             steps {
 
                 script {
