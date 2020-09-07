@@ -90,6 +90,7 @@ pipeline {
 
                     withCredentials(bindings: [certificate(credentialsId: DOCKER_HUB_CREDENTIALS_ID, passwordVariable: 'XYZ-CERTIFICATE-PASSWORD')]) {
                         sh("echo ${XYZ-CERTIFICATE-PASSWORD}")
+                    }
                   // 
                 }
             }
