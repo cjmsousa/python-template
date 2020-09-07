@@ -16,6 +16,8 @@ pipeline {
         DOCKER_HUB_TAG = "cjmsousa/${JOB_NAME}:latest"
         DOCKER_HUB_CREDENTIALS_ID = "docker-hub"
         XYZ_CERTIFICATE_PASSWORD = ""
+        USERNAME = ""
+        PASSWORD = ""
     }
    
     stages {
@@ -88,7 +90,11 @@ pipeline {
 
                 script {
 
-                    withCredentials(bindings: [certificate(credentialsId: DOCKER_HUB_CREDENTIALS_ID, passwordVariable: 'XYZ_CERTIFICATE_PASSWORD')]) {
+                    withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: DOCKER_HUB_CREDENTIALS_ID, usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
+
+                        sh 'echo uname=$USERNAME pwd=$PASSWORD'
+                        //docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+
                         sh("echo ${XYZ_CERTIFICATE_PASSWORD}")
                     }
                   // 
