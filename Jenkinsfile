@@ -74,6 +74,9 @@ pipeline {
         }
 
         stage("Push to Docker Hub") {
+            when {
+                branch 'master'
+            }
             steps {
 
                 script {
@@ -84,11 +87,11 @@ pipeline {
 
                 //Tag release image
                 sh("docker tag ${RELEASE_IMAGE_ID} ${DOCKER_HUB_TAG}")
-
+            
                 //Push to Docker Hub
                 //withDockerRegistry([ credentialsId: "docker-hub-credentials", url: "" ]) {
                 script {
-                    withCredentials([credentialsId: "${DOCKER_HUB_CREDENTIALS_ID}"]) {
+                    withCredentials([credentialsId: "${DOCKER_HUB_CREDENTIALS_ID}", url: ""]) {
                         sh("docker push ${DOCKER_HUB_TAG}")
                     }
                 }
