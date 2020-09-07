@@ -86,7 +86,7 @@ pipeline {
                 sh("docker tag ${RELEASE_IMAGE_ID} ${DOCKER_HUB_TAG}")
 
                 script {
-                    withCredentials($class: 'UsernamePasswordMultiBinding', credentialsId: DOCKER_HUB_CREDENTIALS_ID, usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD') {
+                    withCredentials("https://registry-1.docker.io/v2/", DOCKER_HUB_CREDENTIALS_ID) {
                 
                         //Push to Docker Hub
                         sh("docker push ${DOCKER_HUB_TAG}") 
